@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const vendorRegister = async(req,res)=>{
+    console.log("Register endpoint hit");  // Check if the request reaches here
     const {username, email, password} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     try{
