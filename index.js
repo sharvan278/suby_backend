@@ -8,7 +8,8 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:4000' }));
+// app.use(cors({ origin: 'http://localhost:4000' }));
+app.use(cors());
 const port = process.env.port || 4000;
 app.use(bodyParser.json()); // Add this line
 app.use('/uploads',express.static('uploads'));
