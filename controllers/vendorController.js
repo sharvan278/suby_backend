@@ -25,22 +25,42 @@ const vendorRegister = async(req,res)=>{
     }
 }
 
-const vendorLogin = async(req,res)=>{
-    const {email, password} = req.body;
-    try{
-        const vendor = await Vendor.findOne({email});
-        if(!vendor || !( await bcrypt.compare(password,vendor.password))){
-            return res.status(400).json({msg: 'Invalid credentials'});
+const vendorLogin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const vendor = await Vendor.findOne({ email });
+        if (!vendor || !(await bcrypt.compare(password, vendor.password))) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
         }
-        const payload = {vendorId: vendor._id};
-        const token = jwt.sign(payload, 'jwtPass', {expiresIn:"1h"});
-        // res.status(200).json({token});
-        res.json({sucess:"login sucessful",token});
-        console.log(email,token);
-}catch(err){
-    console.log(err);
-}
-}
+        const payload = { vendorId: vendor._id };
+        const token = jwt.sign(payload, 'jwtPass', { expiresIn: "1h" });
+        
+        // Return token and vendorId
+        res.json({ success: "login successful", token, vendorId: vendor._id });
+        console.log(email, token);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
+
+
+// const vendorLogin = async(req,res)=>{
+//     const {email, password} = req.body;
+//     try{
+//         const vendor = await Vendor.findOne({email});
+//         if(!vendor || !( await bcrypt.compare(password,vendor.password))){
+//             return res.status(400).json({msg: 'Invalid credentials'});
+//         }
+//         const payload = {vendorId: vendor._id};
+//         const token = jwt.sign(payload, 'jwtPass', {expiresIn:"1h"});
+//         // res.status(200).json({token});
+//         res.json({sucess:"login sucessful",token});
+//         console.log(email,token);
+// }catch(err){
+//     console.log(err);
+// }
+// }
 
 const getAllVendors = async(req,res)=>{
     try {
